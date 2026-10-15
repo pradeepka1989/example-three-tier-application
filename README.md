@@ -130,3 +130,31 @@ DATABASE_URL=postgres://app:app@localhost:5432/app npx node-pg-migrate down
 ```
 
 When running via Docker Compose the `migrate` service handles this automatically on startup.
+
+## Example Usage
+
+This section demonstrates how to use the three-tier application in a typical workflow.
+
+### Creating a Task
+
+1. Open [http://localhost:3000](http://localhost:3000) in your browser
+2. Enter a task title in the input field (e.g., "Buy groceries")
+3. Click the "Add" button
+4. The task appears in the list below
+
+### Completing a Task
+
+1. Click the checkbox next to any task to mark it as complete
+2. The task title will show with a strikethrough and reduced opacity
+3. The progress counter updates to reflect completed tasks
+
+### How It Works Behind the Scenes
+
+When you create a task:
+
+1. The **frontend** (Next.js) sends a POST request to `/tasks` via a Server Action
+2. The **API** (Express) receives the request, validates the input, and inserts a row into the `tasks` table
+3. The **database** (PostgreSQL) stores the task with a unique ID and timestamp
+4. The response flows back through the API to the frontend, which refreshes the task list
+
+This demonstrates the full three-tier communication pattern: Browser → Web → API → Database.
