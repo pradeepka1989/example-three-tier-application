@@ -130,3 +130,62 @@ DATABASE_URL=postgres://app:app@localhost:5432/app npx node-pg-migrate down
 ```
 
 When running via Docker Compose the `migrate` service handles this automatically on startup.
+
+## Testing
+
+Each tier has a test script configured in its `package.json`. Currently, the project uses placeholder test configurations. To add tests:
+
+### Running tests
+
+```bash
+# API tests
+cd src/api
+npm test
+
+# Database tests
+cd src/db
+npm test
+
+# Web frontend tests
+cd src/web
+npm test
+```
+
+### Example: Adding a simple API test
+
+To add a test for the API, install a test framework like Jest:
+
+```bash
+cd src/api
+npm install --save-dev jest
+```
+
+Then update `package.json`:
+
+```json
+{
+  "scripts": {
+    "test": "jest"
+  }
+}
+```
+
+Create a test file `src/api/__tests__/health.test.js`:
+
+```javascript
+const request = require('supertest');
+const app = require('../index');
+
+describe('GET /health', () => {
+  it('should return 200 OK', async () => {
+    const res = await request(app).get('/health');
+    expect(res.statusCode).toBe(200);
+  });
+});
+```
+
+Then run:
+
+```bash
+npm test
+```
